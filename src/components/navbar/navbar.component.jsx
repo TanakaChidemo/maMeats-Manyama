@@ -1,7 +1,12 @@
 const Navbar = () => {
   return (
     <div>
-      <h1>This is the Navbar of maMeats-Manyama!</h1>
+      <div>
+        <img src="" alt="logo" />
+      </div>
+      <div>
+        <a href="/login">Login</a>
+      </div>
     </div>
   );
 };
