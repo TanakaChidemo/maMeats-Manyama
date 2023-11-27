@@ -1,11 +1,19 @@
+import React from "react";
+
 const MeatType = ({ meatTypes }) => {
   return (
     <div>
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 w-full md:w-1/2 mx-auto">
         {meatTypes.map((meatType) => (
           <div
-            className="border-blue-500 border-2 m-1 rounded-lg"
+            className="border-blue-500 border-2 m-1 rounded-lg bg-opacity-0"
             key={meatType}
+            style={{
+              content: '"🥩"',
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
           >
             <div className="card">
               <div className="card-body">

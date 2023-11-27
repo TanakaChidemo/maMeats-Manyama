@@ -1,9 +1,8 @@
+import MeatEmojis from "../logo/logo.component";
 const Navbar = () => {
   return (
     <div>
-      <div>
-        <img src="" alt="logo" />
-      </div>
+      <MeatEmojis />
       <div>
         <a href="/login">Login</a>
       </div>
