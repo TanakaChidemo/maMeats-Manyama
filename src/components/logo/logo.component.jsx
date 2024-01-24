@@ -15,12 +15,6 @@ const MeatEmojis = () => {
           maMeats Manyama
         </h1>
       </div>
-      <button
-        className="text-lg font-bold"
-        style={{ fontFamily: "Bigelow Rules" }}
-      >
-        login
-      </button>
     </div>
   );
 };
