@@ -13,7 +13,10 @@ const Navbar = () => {
         <a href="/login" className="px-4">
           Login
         </a>
-        <span className="cart-icon flex">
+        <span
+          className="cart-icon flex"
+          onClick={{setCartItems} => {cartItems} + 1}
+        >
           <ShoppingCartIcon />
           {cartItems > 0 && (
             <span className="cart-items absolute inset-8">{cartItems}</span>
