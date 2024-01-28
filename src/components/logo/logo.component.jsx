@@ -1,22 +1,15 @@
-import React from "react";
-const MeatEmojis = () => {
+const MeatEmoji = () => {
   return (
     <div className="flex border-2 items-center justify-between px-2">
       <div
         role="img"
-        aria-label="Meat Emojis"
+        aria-label="Meat Emoji"
         className="text-6xl flex items-center"
       >
         🥩
-        <h1
-          className="text-3xl font-bold"
-          style={{ fontFamily: "Bigelow Rules" }}
-        >
-          maMeats Manyama
-        </h1>
       </div>
     </div>
   );
 };
 
-export default MeatEmojis;
+export default MeatEmoji;

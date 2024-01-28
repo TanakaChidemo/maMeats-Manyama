@@ -1,27 +1,21 @@
-import MeatEmojis from "../logo/logo.component.jsx";
+import MeatEmoji from "../logo/logo.component.jsx";
 import { useState } from "react";
-import ShoppingCartIcon from "../../components/ShoppingCartIcon.component.jsx"; // Import the shopping cart SVG
-// Import the shopping cart SVG
+import ShoppingCartIcon from "../../components/ShoppingCartIcon.component.jsx";
 
 const Navbar = () => {
-  const [cartItems, setCartItems] = useState(12);
-
   return (
     <div className="flex justify-between">
-      <MeatEmojis />
+      <div className="flex justify-between items-center">
+        <MeatEmoji />
+        <h1 className="text-4xl" style={{ fontFamily: "Bigelow Rules" }}>
+          maMeats Manyama
+        </h1>
+      </div>
       <div className="flex justify-between items-center">
         <a href="/login" className="px-4">
           Login
         </a>
-        <span
-          className="cart-icon flex"
-          onClick={{setCartItems} => {cartItems} + 1}
-        >
-          <ShoppingCartIcon />
-          {cartItems > 0 && (
-            <span className="cart-items absolute inset-8">{cartItems}</span>
-          )}
-        </span>
+        <ShoppingCartIcon />
       </div>
     </div>
   );
