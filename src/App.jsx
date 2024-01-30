@@ -9,9 +9,13 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <div className="w-1/2">
-      <Navbar />
-      <MeatType meatTypes={meatTypes} />
+    <div className="flex flex-col justify-center bg-gradient-to-b from-cyan-100 to-blue-200 md:w-1/2">
+      <div>
+        <Navbar />
+      </div>
+      <div>
+        <MeatType meatTypes={meatTypes} />
+      </div>
     </div>
   );
 }

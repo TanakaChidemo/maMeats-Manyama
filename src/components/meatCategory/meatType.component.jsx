@@ -1,5 +1,4 @@
 import React from "react";
-
 const MeatType = ({ meatTypes }) => {
   return (
     <div>
