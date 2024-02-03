@@ -3,7 +3,7 @@ import ShoppingCartIcon from "../../components/ShoppingCartIcon.component.jsx";
 
 const Navbar = () => {
   return (
-    <div className="flex justify-between h-16">
+    <div className="flex h-16">
       <div className="flex items-center w-2/3">
         <MeatEmoji />
         <h1 className="md: text-3xl" style={{ fontFamily: "Bigelow Rules" }}>
