@@ -1,5 +1,4 @@
 import MeatEmoji from "../logo/logo.component.jsx";
-import { useState } from "react";
 import ShoppingCartIcon from "../../components/ShoppingCartIcon.component.jsx";
 
 const Navbar = () => {
