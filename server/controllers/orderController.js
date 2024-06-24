@@ -1,4 +1,5 @@
 const Order = require("../models/orderModel");
+const Product = require("../models/productModel");
 const APIFeatures = require("../utils/apiFeatures");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
@@ -55,10 +56,50 @@ exports.updateOrder = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.closeOrder = catchAsync(async (req, res, next) => {
+  const order = await Order.findByIdAndUpdate(req.params.id, req.body);
+  if (!order) {
+    return next(new AppError("No order found with that ID", 404));
+  }
+  if (orderStatus === false) {
+    return next(new AppError("This order is already closed", 400));
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      order,
+    },
+  });
+});
+
+exports.reopenOrder = catchAsync(async (req, res, next) => {
+  const order = await Order.findByIdAndUpdate(req.params.id, req.body);
+  if (!order) {
+    return next(new AppError("No order found with that ID", 404));
+  }
+  if (orderStatus === true) {
+    return next(new AppError("This order is already open", 400));
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      order,
+    },
+  });
+});
+
 exports.addProductToOrder = catchAsync(async (req, res, next) => {
   const { orderId, productId, quantity, sharedUsers } = req.body;
   const userId = req.user.id; // Assuming user is authenticated
 
+  if (orderStatus === false) {
+    return next(
+      new AppError(
+        "This order is closed. Please speak to the order admin to reopen it.",
+        400
+      )
+    );
+  }
   // Validate input
   if (!orderId || !productId || !quantity) {
     return next(

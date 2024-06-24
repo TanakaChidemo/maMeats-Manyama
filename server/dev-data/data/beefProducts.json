@@ -1,0 +1,506 @@
+[
+  {
+    "category": "Vegetables",
+    "name": "3Cut Mix Vegetables",
+    "brandName": "Kuroli",
+    "countryOfOrigin": "India",
+    "unit": "grams",
+    "unitPrice": 4.5,
+    "standardPackaging": "20 x 400 Grms"
+  },
+  {
+    "category": "Vegetables",
+    "name": "3Cut Mix Vegetables",
+    "brandName": "Kuroli",
+    "countryOfOrigin": "India",
+    "unit": "kg",
+    "unitPrice": 4.2,
+    "standardPackaging": "4 x 2.5 Kg"
+  },
+  {
+    "category": "Fish",
+    "name": "Basa Fillet Untrimmed",
+    "brandName": "",
+    "countryOfOrigin": "Vietnam",
+    "unit": "kg",
+    "unitPrice": 7.0,
+    "standardPackaging": "10 x 1 Kg"
+  },
+  {
+    "category": "Fish",
+    "name": "Basa Fillet Well Trimmed",
+    "brandName": "",
+    "countryOfOrigin": "Vietnam",
+    "unit": "kg",
+    "unitPrice": 7.0,
+    "standardPackaging": "4 x 2.5 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Body Fat",
+    "brandName": "Friboi",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 8.0,
+    "standardPackaging": "21 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Brisket",
+    "brandName": "Friboi",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 20.0,
+    "standardPackaging": "24 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Brisket USDA",
+    "brandName": "Friboi",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 22.0,
+    "standardPackaging": "24 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Burger 100 Grms",
+    "brandName": "Choice",
+    "countryOfOrigin": "UAE",
+    "unit": "kg",
+    "unitPrice": 11.5,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Chuck",
+    "brandName": "GJ",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 21.0,
+    "standardPackaging": "23 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Cube Roll",
+    "brandName": "Minerva",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 30.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Eye Round",
+    "brandName": "Friboi",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 22.0,
+    "standardPackaging": "31 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Eye Round",
+    "brandName": "GJ",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 23.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Feet",
+    "brandName": "Supremo",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 6.5,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Fore Quarter 90 VL",
+    "brandName": "Friboi",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 16.5,
+    "standardPackaging": "21 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Fore Quarter 90 VL",
+    "brandName": "Minerva",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 16.5,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Fore Quarter",
+    "brandName": "GJ",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 16.5,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Heart",
+    "brandName": "Friboi",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 8.0,
+    "standardPackaging": "25 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Liver",
+    "brandName": "Agra",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 7.5,
+    "standardPackaging": "27 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Liver",
+    "brandName": "AMG",
+    "countryOfOrigin": "Australia",
+    "unit": "kg",
+    "unitPrice": 7.0,
+    "standardPackaging": "18 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Liver",
+    "brandName": "Biernacki",
+    "countryOfOrigin": "Poland",
+    "unit": "kg",
+    "unitPrice": 6.0,
+    "standardPackaging": "12 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Marrow Bone",
+    "brandName": "Biernacki",
+    "countryOfOrigin": "Poland",
+    "unit": "kg",
+    "unitPrice": 8.0,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Marrow Bone",
+    "brandName": "Friboi",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 8.0,
+    "standardPackaging": "18 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Mince",
+    "brandName": "Al Tamam",
+    "countryOfOrigin": "India",
+    "unit": "grams",
+    "unitPrice": 14.17,
+    "standardPackaging": "40 x 450 Grms"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Shank B/L",
+    "brandName": "Nihari Golden Fresh",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 15.0,
+    "standardPackaging": "18 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Shank B/Less",
+    "brandName": "Friboi",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 22.0,
+    "standardPackaging": "26 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Shank B/Less",
+    "brandName": "GJ",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 22.0,
+    "standardPackaging": "25 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Short Ribs B/In Cap Off",
+    "brandName": "Beef Master",
+    "countryOfOrigin": "South Africa",
+    "unit": "kg",
+    "unitPrice": 35.0,
+    "standardPackaging": "17 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Short Ribs",
+    "brandName": "Sulbeef",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 16.75,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Silverside Flat USDA",
+    "brandName": "Friboi",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 23.0,
+    "standardPackaging": "22 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Striploin",
+    "brandName": "Minerva",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 35.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef T/Bone",
+    "brandName": "Beef Master",
+    "countryOfOrigin": "South Africa",
+    "unit": "kg",
+    "unitPrice": 28.0,
+    "standardPackaging": "16 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Tenderloin",
+    "brandName": "Minerva",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 40.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Tenderloin 189A",
+    "brandName": "Friboi",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 40.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Tenderloin",
+    "brandName": "Monterey",
+    "countryOfOrigin": "USA",
+    "unit": "kg",
+    "unitPrice": 50.0,
+    "standardPackaging": "17 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Topside",
+    "brandName": "Minerva",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 22.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Topside",
+    "brandName": "Friboi",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 22.0,
+    "standardPackaging": "21 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Beef Topside",
+    "brandName": "GJ",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 22.0,
+    "standardPackaging": "22 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Chicken Drumsticks",
+    "brandName": "Oster",
+    "countryOfOrigin": "USA",
+    "unit": "kg",
+    "unitPrice": 10.0,
+    "standardPackaging": "12 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Chicken Leg Quarters",
+    "brandName": "Frango",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 6.5,
+    "standardPackaging": "15 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Chicken Leg Quarter",
+    "brandName": "Agro",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 6.5,
+    "standardPackaging": "15 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Chicken Middle Joints",
+    "brandName": "Oster",
+    "countryOfOrigin": "USA",
+    "unit": "kg",
+    "unitPrice": 15.0,
+    "standardPackaging": "13 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Chicken Thigh B/L",
+    "brandName": "Mirha",
+    "countryOfOrigin": "USA",
+    "unit": "kg",
+    "unitPrice": 13.5,
+    "standardPackaging": "18 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Chicken Whole Griller",
+    "brandName": "Al Tamam",
+    "countryOfOrigin": "Oman",
+    "unit": "kg",
+    "unitPrice": 8.0,
+    "standardPackaging": "10 x 900 Grms"
+  },
+  {
+    "category": "Poultry",
+    "name": "Chicken Whole Skinless",
+    "brandName": "Oster",
+    "countryOfOrigin": "USA",
+    "unit": "kg",
+    "unitPrice": 8.5,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Chicken Whole Skinless",
+    "brandName": "Sunnygold",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 8.0,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Chicken Wings",
+    "brandName": "Frango",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 7.0,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Chicken Wings",
+    "brandName": "Kuroli",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 7.0,
+    "standardPackaging": "12 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Chicken Wings",
+    "brandName": "Oster",
+    "countryOfOrigin": "USA",
+    "unit": "kg",
+    "unitPrice": 7.5,
+    "standardPackaging": "13 Kg"
+  },
+  {
+    "category": "Beef",
+    "name": "Corned Beef",
+    "brandName": "Eden",
+    "countryOfOrigin": "Brazil",
+    "unit": "grams",
+    "unitPrice": 3.3,
+    "standardPackaging": "24 x 340 Grms"
+  },
+  {
+    "category": "Beef",
+    "name": "Corned Beef",
+    "brandName": "Max",
+    "countryOfOrigin": "Brazil",
+    "unit": "grams",
+    "unitPrice": 3.0,
+    "standardPackaging": "24 x 340 Grms"
+  },
+  {
+    "category": "Poultry",
+    "name": "Drumstick Griller",
+    "brandName": "Eden",
+    "countryOfOrigin": "USA",
+    "unit": "grams",
+    "unitPrice": 7.25,
+    "standardPackaging": "24 x 340 Grms"
+  },
+  {
+    "category": "Poultry",
+    "name": "Frozen Drumsticks",
+    "brandName": "Oster",
+    "countryOfOrigin": "USA",
+    "unit": "kg",
+    "unitPrice": 7.5,
+    "standardPackaging": "12 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Frozen Leg Quarter",
+    "brandName": "Kuroli",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 6.5,
+    "standardPackaging": "15 Kg"
+  },
+  {
+    "category": "Poultry",
+    "name": "Frozen Whole Griller",
+    "brandName": "Sunnygold",
+    "countryOfOrigin": "Brazil",
+    "unit": "grams",
+    "unitPrice": 8.0,
+    "standardPackaging": "10 x 900 Grms"
+  },
+  {
+    "category": "Fish",
+    "name": "Hake Fillet",
+    "brandName": "Sealord",
+    "countryOfOrigin": "South Africa",
+    "unit": "grams",
+    "unitPrice": 12.5,
+    "standardPackaging": "5 x 3 Kg"
+  },
+  {
+    "category": "Fish",
+    "name": "Hake Fillet",
+    "brandName": "Sea Harvest",
+    "countryOfOrigin": "South Africa",
+    "unit": "grams",
+    "unitPrice": 10.0,
+    "standardPackaging": "10 x 900 Grms"
+  }
+]

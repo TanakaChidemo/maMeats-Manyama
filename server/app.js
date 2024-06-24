@@ -5,6 +5,9 @@ const rateLimit = require("express-rate-limit");
 const path = require("path");
 const AppError = require("./utils/appError");
 const helmet = require("helmet");
+const productRouter = require("./routes/productRoutes");
+const orderRouter = require("./routes/orderRoutes");
+const userRouter = require("./routes/userRoutes");
 
 const app = express();
 
@@ -35,9 +38,9 @@ app.get("/manyama/hello", (req, res) => {
 });
 
 //Routes
-// app.use("/manayama/orders", orderRouter);
-// app.use("/manayama/products", productRouter);
-// app.use("/manayama/users", userRouter);
+app.use("/manayama/orders", orderRouter);
+app.use("/manayama/products", productRouter);
+app.use("/manayama/users", userRouter);
 
 app.all("*", (req, res, next) => {
   next(

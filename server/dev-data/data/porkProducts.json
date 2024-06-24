@@ -1,0 +1,632 @@
+[
+  {
+    "category": "Pork",
+    "name": "Back Bacon Smoked",
+    "brandName": "Vander Mey",
+    "countryOfOrigin": "Holland",
+    "unit": "kg",
+    "unitPrice": 25.0,
+    "standardPackaging": "10x1 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Back Bacon Smoked",
+    "brandName": "Vander Mey",
+    "countryOfOrigin": "Holland",
+    "unit": "kg",
+    "unitPrice": 24.0,
+    "standardPackaging": "5x2 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Back Bacon Unsmoked",
+    "brandName": "Dannka",
+    "countryOfOrigin": "Holland",
+    "unit": "kg",
+    "unitPrice": 25.0,
+    "standardPackaging": "10x1 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Back Bacon Unsmoked",
+    "brandName": "Vander Mey",
+    "countryOfOrigin": "Holland",
+    "unit": "kg",
+    "unitPrice": 24.0,
+    "standardPackaging": "5x2 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Back Fat B/Less S/Less",
+    "brandName": "Alibem",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 12.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Back Fat B/Less S/Less",
+    "brandName": "Pamplona",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 12.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Bacon Honey Cured",
+    "brandName": "CDO",
+    "countryOfOrigin": "",
+    "unit": "grams",
+    "unitPrice": 68.0,
+    "standardPackaging": "22 x 200 Gms"
+  },
+  {
+    "category": "Pork",
+    "name": "Belly B/L S/L",
+    "brandName": "Coopavel",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 14.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Belly B/L Sheet Rib",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 13.0,
+    "standardPackaging": "17 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Belly B/l Single",
+    "brandName": "Alibem",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 17.0,
+    "standardPackaging": "21 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Belly B/L Single Rib",
+    "brandName": "Agro Invest",
+    "countryOfOrigin": "Ukraine",
+    "unit": "kg",
+    "unitPrice": 13.5,
+    "standardPackaging": "12 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Blood Block",
+    "brandName": "Zenbo",
+    "countryOfOrigin": "Holland",
+    "unit": "kg",
+    "unitPrice": 9.0,
+    "standardPackaging": "18 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Bologna Sausage",
+    "brandName": "Zenbo",
+    "countryOfOrigin": "Holland",
+    "unit": "kg",
+    "unitPrice": 15.5,
+    "standardPackaging": "14 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Chops",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 12.5,
+    "standardPackaging": "15 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Diaphragm",
+    "brandName": "Pamplona",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 12.0,
+    "standardPackaging": "12 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Ear Flap",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 14.0,
+    "standardPackaging": "15 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Feet",
+    "brandName": "Farmers Choice",
+    "countryOfOrigin": "Kenya",
+    "unit": "kg",
+    "unitPrice": 7.5,
+    "standardPackaging": "27 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Feet Front",
+    "brandName": "AAA",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 4.0,
+    "standardPackaging": "12 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Feet Front",
+    "brandName": "Frimesa",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 4.75,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Feet Hind",
+    "brandName": "AAA",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 4.0,
+    "standardPackaging": "17 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Feet Hind",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 4.25,
+    "standardPackaging": "18 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Femur Bone",
+    "brandName": "Gelada",
+    "countryOfOrigin": "Spain",
+    "unit": "kg",
+    "unitPrice": 4.0,
+    "standardPackaging": "10kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Femur Bone",
+    "brandName": "Mabella",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 5.0,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Flower Fat",
+    "brandName": "AAA",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 10.0,
+    "standardPackaging": "15 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Frankfurters",
+    "brandName": "Zenbo IQF",
+    "countryOfOrigin": "Holland",
+    "unit": "kg",
+    "unitPrice": 15.5,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Gammons B/L",
+    "brandName": "Vander Mey",
+    "countryOfOrigin": "Holland",
+    "unit": "kg",
+    "unitPrice": 22.5,
+    "standardPackaging": "16 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Ham Sweet Regular",
+    "brandName": "CDO",
+    "countryOfOrigin": "",
+    "unit": "grams",
+    "unitPrice": 33.0,
+    "standardPackaging": "16 x 500 Gms"
+  },
+  {
+    "category": "Pork",
+    "name": "Head Half",
+    "brandName": "AAA",
+    "countryOfOrigin": "Ukraine",
+    "unit": "kg",
+    "unitPrice": 6.0,
+    "standardPackaging": "15 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Head Half",
+    "brandName": "Farmers Choice",
+    "countryOfOrigin": "Kenya",
+    "unit": "kg",
+    "unitPrice": 7.5,
+    "standardPackaging": "15 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Head Whole",
+    "brandName": "AAA",
+    "countryOfOrigin": "Ukraine",
+    "unit": "kg",
+    "unitPrice": 6.0,
+    "standardPackaging": "15 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Intestine",
+    "brandName": "Frimesa",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 19.0,
+    "standardPackaging": "4x4kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Kidney",
+    "brandName": "Pamplona",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 5.5,
+    "standardPackaging": "12 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Kidney",
+    "brandName": "Alibem",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 5.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Knuckle (Hocks) IQF",
+    "brandName": "AAA",
+    "countryOfOrigin": "Ukraine",
+    "unit": "kg",
+    "unitPrice": 11.0,
+    "standardPackaging": "19 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Knuckle Hocks Front IWP",
+    "brandName": "Pamplona",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 11.0,
+    "standardPackaging": "12 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Knuckle IWP",
+    "brandName": "Pamplona",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 11.0,
+    "standardPackaging": "12 Kgs"
+  },
+  {
+    "category": "Pork",
+    "name": "Leg B/L S/L",
+    "brandName": "Frimesa",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 12.0,
+    "standardPackaging": "25 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Leg B/L S/L IWP",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 12.0,
+    "standardPackaging": "19 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Liver IWP",
+    "brandName": "Pamplona",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 5.0,
+    "standardPackaging": "10Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Loin B/In IWP",
+    "brandName": "Frimesa",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 10.5,
+    "standardPackaging": "25 kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Loin B/IN",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 10.5,
+    "standardPackaging": "19 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Loin B/L",
+    "brandName": "Alibem",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 15.0,
+    "standardPackaging": "23 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Loin B/L",
+    "brandName": "Pamplona",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 15.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Loin Ribs IWP",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 19.0,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Loin Ribs IWP",
+    "brandName": "Frimesa",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 19.0,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Longganisa",
+    "brandName": "CDO",
+    "countryOfOrigin": "",
+    "unit": "grams",
+    "unitPrice": 31.0,
+    "standardPackaging": "24 x 250 Gms"
+  },
+  {
+    "category": "Pork",
+    "name": "Mortadella",
+    "brandName": "Zenbo",
+    "countryOfOrigin": "Holland",
+    "unit": "kg",
+    "unitPrice": 15.0,
+    "standardPackaging": "18 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Neck (Collar) B/L",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 12.5,
+    "standardPackaging": "18 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Quekiam Holiday",
+    "brandName": "CDO",
+    "countryOfOrigin": "",
+    "unit": "grams",
+    "unitPrice": 28.0,
+    "standardPackaging": "22 x 220 Gms"
+  },
+  {
+    "category": "Pork",
+    "name": "Riblet",
+    "brandName": "Alibem",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 9.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Salami",
+    "brandName": "Zenbo",
+    "countryOfOrigin": "Holland",
+    "unit": "kg",
+    "unitPrice": 15.5,
+    "standardPackaging": "8 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Sausage",
+    "brandName": "Alibem",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 11.5,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Sausage",
+    "brandName": "Kenya Farmers Choice",
+    "countryOfOrigin": "",
+    "unit": "grams",
+    "unitPrice": 18.17,
+    "standardPackaging": "20 x 454 Grms"
+  },
+  {
+    "category": "Pork",
+    "name": "Sausage",
+    "brandName": "Pamplona",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 11.5,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Shoulder B/L IWP",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 11.0,
+    "standardPackaging": "18 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Shoulder B/L S/L IWP",
+    "brandName": "Frimesa",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 11.0,
+    "standardPackaging": "25 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Shoulder B/L S/L IWP",
+    "brandName": "Palmali",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 11.0,
+    "standardPackaging": "23 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Shoulder Ham",
+    "brandName": "Vander",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 15.5,
+    "standardPackaging": "4 x 5 kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Skin",
+    "brandName": "AAA",
+    "countryOfOrigin": "Ukraine",
+    "unit": "kg",
+    "unitPrice": 6.0,
+    "standardPackaging": "16 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Spareribs",
+    "brandName": "Danish Crown",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 13.0,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Spareribs IWP",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 14.5,
+    "standardPackaging": "18 kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Streaky Bacon Smoked",
+    "brandName": "Farmers Choice",
+    "countryOfOrigin": "Kenya",
+    "unit": "grams",
+    "unitPrice": 68.0,
+    "standardPackaging": "10 x 200 Grms"
+  },
+  {
+    "category": "Pork",
+    "name": "Streaky Bacon Unsmoked",
+    "brandName": "Farmers Choice",
+    "countryOfOrigin": "Kenya",
+    "unit": "grams",
+    "unitPrice": 68.0,
+    "standardPackaging": "10 x 200 Grms"
+  },
+  {
+    "category": "Pork",
+    "name": "Tail",
+    "brandName": "Farmers Choice",
+    "countryOfOrigin": "Kenya",
+    "unit": "kg",
+    "unitPrice": 4.0,
+    "standardPackaging": "18 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Tail",
+    "brandName": "Zenbo",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 4.0,
+    "standardPackaging": "18 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Tails",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 4.0,
+    "standardPackaging": "17 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Throat Fat",
+    "brandName": "Mabella",
+    "countryOfOrigin": "",
+    "unit": "kg",
+    "unitPrice": 6.0,
+    "standardPackaging": "10 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Tocino",
+    "brandName": "CDO",
+    "countryOfOrigin": "",
+    "unit": "grams",
+    "unitPrice": 33.0,
+    "standardPackaging": "12 x 450 Gms"
+  },
+  {
+    "category": "Pork",
+    "name": "Tongue",
+    "brandName": "Alibem",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 15.0,
+    "standardPackaging": "20 Kg"
+  },
+  {
+    "category": "Pork",
+    "name": "Tongue",
+    "brandName": "Pamplona",
+    "countryOfOrigin": "Brazil",
+    "unit": "kg",
+    "unitPrice": 15.0,
+    "standardPackaging": "20 Kg"
+  }
+]
