@@ -38,9 +38,9 @@ app.get("/manyama/hello", (req, res) => {
 });
 
 //Routes
-app.use("/manayama/orders", orderRouter);
-app.use("/manayama/products", productRouter);
-app.use("/manayama/users", userRouter);
+app.use("/manyama/orders", orderRouter);
+app.use("/manyama/products", productRouter);
+app.use("/manyama/users", userRouter);
 
 app.all("*", (req, res, next) => {
   next(
