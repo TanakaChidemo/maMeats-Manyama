@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
   lastName: {
     type: String,
   },
-  Username: {
+  userName: {
     type: String,
     required: [true, "Your username is required."],
   },
@@ -68,8 +68,9 @@ const userSchema = new mongoose.Schema({
 userSchema.plugin(uniqueValidator);
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password") || this.isNew) return next();
+  if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 12);
+  console.log("Hashed Password:", this.password); // Add this line to log the hashed password
   this.passwordConfirm = undefined;
   next();
 });
