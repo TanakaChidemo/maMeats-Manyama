@@ -129,7 +129,7 @@ const Login = () => {
           <button
             type="button"
             onClick={handleLogin}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            className="bg-blue-500 text-white px-4 py-2 m-2 rounded-md"
           >
             Login
           </button>
@@ -144,7 +144,7 @@ const Login = () => {
         value={firstName}
         onChange={handleFirstNameChange}
         required
-        className="border border-gray-300 rounded-md px-3 py-2 w-full"
+        className="border border-gray-300 rounded-md px-3 py-2 m-2 w-full"
         placeholder="first name"
       />
       <br/>
@@ -153,7 +153,7 @@ const Login = () => {
         value={Username}
         onChange={handleUsernameChange}
         required
-        className="border border-gray-300 rounded-md px-3 py-2 w-full"
+        className="border border-gray-300 rounded-md px-3 py-2 m-2 w-full"
         placeholder="username"
       />
       <br/>
@@ -162,7 +162,7 @@ const Login = () => {
           value={email}
           onChange={handleEmailChange}
           required
-          className="border border-gray-300 rounded-md px-3 py-2 w-full"
+          className="border border-gray-300 rounded-md px-3 py-2 m-2 w-full"
           placeholder="email"
         />
         <br />
@@ -171,7 +171,7 @@ const Login = () => {
           value={password}
           onChange={handlePasswordChange}
           required
-          className="border border-gray-300 rounded-md px-3 py-2 w-full"
+          className="border border-gray-300 rounded-md px-3 py-2 m-2 w-full"
           placeholder="password"
         />
         <br />
@@ -180,7 +180,7 @@ const Login = () => {
           value={passwordConfirm}
           onChange={handlePasswordConfirm}
           required
-          className="border border-gray-300 rounded-md px-3 py-2 w-full"
+          className="border border-gray-300 rounded-md px-3 py-2 m-2 w-full"
           placeholder="re-enter password"
         />
         <button
