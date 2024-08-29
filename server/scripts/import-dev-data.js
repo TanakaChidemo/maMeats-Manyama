@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
 
-dotenv.config({ path: `${__dirname}/../../../config.env` });
+dotenv.config({ path: `${__dirname}/../../config.env` });
 
 console.log("NODE_ENV:", process.env.NODE_ENV);
 console.log("DATABASE:", process.env.DATABASE);
@@ -18,15 +18,13 @@ const DB = process.env.DATABASE.replace(
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
     useUnifiedTopology: true,
   })
   .then(() => console.log("manyama DB connection successful!"));
 
 // READ JSON FILE
 const products = JSON.parse(
-  fs.readFileSync(`${__dirname}/../allProducts.json`, "utf-8")
+  fs.readFileSync(`${__dirname}/allProducts.json`, "utf-8")
 );
 
 // IMPORT DATA INTO DB

@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
   },
   brandName: {
     type: String,
-    required: [true, "A product must have a brand name."],
+    // required: [true, "A product must have a brand name."],
   },
   countryOfOrigin: {
     type: String,
