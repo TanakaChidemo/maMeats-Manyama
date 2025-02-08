@@ -7,9 +7,11 @@ import SignIn from "./components/sign-in/sign-in.component";
 import SignUp from "./components/sign-up/sign-up.component";
 import OrderSummary from "./components/orderSummary/orderSummary.component";
 import CreateNewOrder from "./routes/orders/createNewOrder.component";
+import { AuthProvider } from "./AuthContext/authContext";
 
 const App = () => {
   return (
+    <AuthProvider>
     <Routes>
       <Route path="/" element={<Layout />}>
       <Route index element={<Home/>}/>
@@ -20,6 +22,7 @@ const App = () => {
         <Route path="/createNewOrder" element={<CreateNewOrder />} />
       </Route>
     </Routes>
+    </AuthProvider>
   );
 };
 
