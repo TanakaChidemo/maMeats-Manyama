@@ -117,5 +117,6 @@ const Header = () => {
         </header>
     );
 };
+// Exporting the Header component
 
 export default Header;
