@@ -1,37 +1,36 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../AuthContext/authContext';
+import { useContext } from 'react';
+import { UserContext } from '../../UserContext/UserContext';
 
 const Header = () => {  
     const [isOpen, setIsOpen] = useState(false);
-    const { loginStatus: isLoggedIn, logout } = useAuth();
+    const { loginStatus: isLoggedIn, logout: authLogout } = useAuth();
+    const { logout: userContextLogout } = useContext(UserContext);
     const navigate = useNavigate();
     
     const toggleMenu = () => setIsOpen(!isOpen);
 
     const handleLogout = async () => {
         try {
-            console.log('Logout function:', logout); // Debug logout function
-            
-            const response = await fetch("/manyama/users/logout", { 
+            await fetch("/manyama/users/logout", { 
                 method: "GET", 
                 credentials: "include" 
             });
             
-            if (response.ok) {
-                if (typeof logout !== 'function') {
-                    console.error('logout is not a function:', logout);
-                    return;
-                }
-                logout();
-                navigate("/login");
-            } else {
-                throw new Error('Logout failed');
-            }
+            // Call userContextLogout first since it includes a page refresh
+            userContextLogout();
+            authLogout();
+            
         } catch (err) {
             console.error("Logout failed:", err);
+            // Still clear state even if the API call fails
+            userContextLogout();
+            authLogout();
         }
     };
+
 
     return (
         <header>

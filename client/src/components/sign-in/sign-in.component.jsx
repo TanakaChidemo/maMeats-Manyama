@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth} from "./../../AuthContext/authContext";
+import { UserContext } from '../../UserContext/UserContext';
 
 
 const SignIn = () => {
@@ -11,6 +12,7 @@ const SignIn = () => {
     const phoneNumberInputRef = useRef(null);
     const emailInputRef = useRef(null);
     const navigate = useNavigate();
+    const {setUser} = useContext(UserContext);
 
     useEffect(() => {
         if (signInMethod === 'phone') {
@@ -25,48 +27,68 @@ const SignIn = () => {
     }, [signInMethod]);
 
     const handleSuccessfulLogin = (data) => {
-        // Store the auth token if your API provides one
+        console.log('Login data received:', data);
+
+        // Store the auth token
         if (data.token) {
             localStorage.setItem('authToken', data.token);
+            console.log('Auth token stored');
         }
         
-        // Store any user data if needed
-        if (data.user) {
-            localStorage.setItem('user', JSON.stringify(data.user));
-        }
-
+       // Store user data and update UserContext
+       if (data.data && data.data.user) {
+        const userData = data.data.user;
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData); // Update UserContext
+        console.log('User data stored and context updated:', userData);
+    
         // Update the login status
         login();
-
+        console.log('Auth context updated');
+    
         // Navigate to homepage
-        navigate('/');
+        console.log('Attempting navigation to home');
+        navigate('/', { replace: true });
+    }
     };
 
     const sendEmailLoginData = async (email, password) => {
         try {
+            console.log('Attempting to connect to:', 'http://localhost:8000/manyama/users/login');
+            
             const response = await fetch('http://localhost:8000/manyama/users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     email,
                     password,
                 }),
             });
-
+    
+            console.log('Response received:', response.status);
+    
             const data = await response.json();
             
             if (!response.ok) {
+                console.error('Server responded with error:', data);
                 throw new Error(data.message || 'Failed to sign in');
             }
-
+    
+            console.log('Login successful:', data);
             return data;
         } catch (error) {
-            throw new Error(error.message || 'Error signing in with email');
+            console.error('Login request failed:', error);
+            if (error instanceof TypeError && error.message === 'Failed to fetch') {
+                throw new Error('Unable to connect to the server. Please check your internet connection and try again.');
+            }
+            throw error;
         }
     };
-
+    
     const sendPhoneLoginData = async (phoneNumber, password) => {
         try {
             const response = await fetch('http://localhost:8000/manyama/users/login', {
@@ -78,6 +100,7 @@ const SignIn = () => {
                     phoneNumber,
                     password,
                 }),
+                credentials: 'include',
             });
 
             const data = await response.json();
@@ -105,7 +128,6 @@ const SignIn = () => {
     
             console.log('Sign in method:', signInMethod);
             console.log('Email:', email);
-            console.log('Password:', password);
             console.log('Phone Number:', phoneNumber);
     
             // Validation
