@@ -1,9 +1,25 @@
 import React, { useContext, useState } from 'react';
+import {useAuth } from '../../AuthContext/authContext';
 import { UserContext } from '../../UserContext/UserContext';
 
+
+
 const CreateNewOrder = () => {
-  // Get context with null check
+  
+  const {getToken} = useAuth();
   const userContext = useContext(UserContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [formData, setFormData] = useState({
+    deliveryDate: '',
+    closingDate: '',
+    closingTime: '',
+    paymentDeadline: '',
+    paymentDeadlineTime: '',
+    paymentDetails1: '',
+    paymentDetails2: ''
+  });
   
   // If context is not available, show loading or error state
   if (!userContext) {
@@ -29,23 +45,11 @@ const CreateNewOrder = () => {
   if (!user) {
     return (
       <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-        <p className="text-red-600">Please log in to create an order.</p>
+        <p className="text-red-600">Please login to create an order.</p>
       </div>
     );
   }
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
-  
-  const [formData, setFormData] = useState({
-    deliveryDate: '',
-    closingDate: '',
-    closingTime: '',
-    paymentDeadlineDate: '',
-    paymentDeadlineTime: '',
-    paymentDetails1: '',
-    paymentDetails2: ''
-  });
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -53,6 +57,8 @@ const CreateNewOrder = () => {
       ...prev,
       [id]: value
     }));
+    setError('');
+    setSuccessMessage('');
   };
 
   const validateForm = () => {
@@ -63,13 +69,13 @@ const CreateNewOrder = () => {
     const deliveryDate = new Date(formData.deliveryDate);
     const closingDate = new Date(`${formData.closingDate} ${formData.closingTime}`);
     const paymentDeadline = new Date(
-      `${formData.paymentDeadlineDate} ${formData.paymentDeadlineTime}`
+      `${formData.paymentDeadline} ${formData.paymentDeadlineTime}`
     );
 
     if (!formData.deliveryDate) errors.push('Delivery date is required');
     if (!formData.closingDate) errors.push('Closing date is required');
     if (!formData.closingTime) errors.push('Closing time is required');
-    if (!formData.paymentDeadlineDate) errors.push('Payment deadline date is required');
+    if (!formData.paymentDeadline) errors.push('Payment deadline date is required');
     if (!formData.paymentDeadlineTime) errors.push('Payment deadline time is required');
     if (!formData.paymentDetails1) errors.push('Payment details are required');
 
@@ -90,6 +96,8 @@ const CreateNewOrder = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccessMessage('');
+  
     
     const errors = validateForm();
     if (errors.length > 0) {
@@ -99,20 +107,32 @@ const CreateNewOrder = () => {
 
     setIsSubmitting(true);
     try {
+      const token = localStorage.getItem('authToken');
+
+      if(!token){
+        throw new Error('Authentication token not found');
+      }
       // Combine date and time fields
       const orderData = {
-        ...formData,
-        adminId: user.id,
-        closingDateTime: `${formData.closingDate}T${formData.closingTime}`,
-        paymentDeadlineDateTime: `${formData.paymentDeadlineDate}T${formData.paymentDeadlineTime}`,
+        admin: [user._id], // Assuming user._id is available from UserContext
+        deliveryDate: new Date(formData.deliveryDate).toISOString(),
+        closingDate: new Date(formData.closingDate).toISOString(),
+        closingTime: formData.closingTime, // String format (e.g., "14:30")
+        paymentDeadline: new Date(formData.paymentDeadline).toISOString(),
+        paymentDeadlineTime: formData.paymentDeadlineTime, // String format (e.g., "14:30")
+        paymentDetails1: formData.paymentDetails1,
+        paymentDetails2: formData.paymentDetails2,
+        orderStatus: true, // Default value
+        products: [] // Initialize empty products array - this will be populated later
       };
 
-      const response = await fetch('/api/orders', {
+      const response = await fetch('http://localhost:8000/manyama/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify(orderData)
       });
 
@@ -120,12 +140,14 @@ const CreateNewOrder = () => {
         throw new Error('Failed to create order');
       }
 
+      setSuccessMessage('Order created successfully!');
+
       // Reset form after successful submission
       setFormData({
         deliveryDate: '',
         closingDate: '',
         closingTime: '',
-        paymentDeadlineDate: '',
+        paymentDeadline: '',
         paymentDeadlineTime: '',
         paymentDetails1: '',
         paymentDetails2: ''
@@ -134,6 +156,9 @@ const CreateNewOrder = () => {
       // You might want to add a success message or redirect here
     } catch (err) {
       setError(err.message);
+      if(err.message.includes('token')){
+        setError('Please login again to create an order');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -143,7 +168,7 @@ const CreateNewOrder = () => {
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-3xl font-bold text-gray-800 mb-2">Create new order</h1>
       <h2 className="text-xl font-semibold text-gray-600 mb-6">
-        Order Admin: {user.name}
+        Order Admin: {user.firstName}
       </h2>
       
       {error && (
@@ -151,6 +176,12 @@ const CreateNewOrder = () => {
           {error}
         </div>
       )}
+
+      {successMessage && (
+  <div className="mb-4 p-4 bg-green-50 border border-green-200 text-green-600 rounded-md">
+    {successMessage}
+  </div>
+)}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -200,13 +231,13 @@ const CreateNewOrder = () => {
 
           {/* Payment Deadline Date */}
           <div className="flex flex-col">
-            <label htmlFor="paymentDeadlineDate" className="text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="paymentDeadline" className="text-sm font-medium text-gray-700 mb-1">
               Payment Deadline
             </label>
             <input
               type="date"
-              id="paymentDeadlineDate"
-              value={formData.paymentDeadlineDate}
+              id="paymentDeadline"
+              value={formData.paymentDeadline}
               onChange={handleInputChange}
               className="mt-1 block w-full rounded-md border-2 border-gray-400 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             />
@@ -225,9 +256,10 @@ const CreateNewOrder = () => {
               className="mt-1 block w-full rounded-md border-2 border-gray-400 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
+          <br />
 
           {/* Payment Details */}
-          <div className="flex flex-col">
+          <div className="flex flex-col md:col-span-2">
             <label htmlFor="paymentDetails1" className="text-sm font-medium text-gray-700 mb-1">
               Payment Details
             </label>

@@ -21,7 +21,7 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
 });
 
 exports.createOrder = catchAsync(async (req, res, next) => {
-  const newOrder = await Order.create(req.body);
+  const newOrder = await Order.create({...req.body, admin: req.user.id});
   res.status(201).json({
     status: "success",
     data: {
