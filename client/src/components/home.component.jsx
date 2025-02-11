@@ -59,7 +59,7 @@ const Home = () => {
 
         {/* View Summary Card - Shown to all users */}
         <Link 
-          to="/orderSummary"
+          to="/orders"
           className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow"
         >
           <div className="text-2xl mb-4">📋</div>
