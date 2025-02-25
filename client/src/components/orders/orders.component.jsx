@@ -96,7 +96,7 @@ const Orders = () => {
   return (
     <div className="p-4">
       <h1 className="text-3xl font-bold text-center mb-8">Orders</h1>
-      <p className="text-sm text-gray-500 text-center mb-4">{debugMessage}</p>
+      {/* <p className="text-sm text-gray-500 text-center mb-4">{debugMessage}</p> */}
       {orders.length === 0 ? (
         <p className="text-center text-gray-600">No orders found</p>
       ) : (

@@ -53,7 +53,7 @@ const App = () => {
               </ProtectedRoute>
             } />
 
-            <Route path="orderSummary" element={
+            <Route path="orderSummary/:orderId" element={
               <ProtectedRoute>
                 <OrderSummary />
               </ProtectedRoute>

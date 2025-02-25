@@ -1,21 +1,22 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserContext/UserContext";
+import { set } from "mongoose";
 
 export const OrderContext = createContext(null);
-
-// Constants for categories and VAT
-export const CATEGORIES = {
-  PORK: "Pork",
-  BEEF: "Beef",
-  POULTRY: "Poultry",
-  SEAFOOD: "Seafood",
-  LAMB: "Lamb",
-  VEGETABLES: "Vegetables"
-};
 
 const VAT_RATE = 0.05;
 
 export const OrderProvider = ({ children }) => {
+
+    const CATEGORIES = {
+        PORK: "Pork",
+        BEEF: "Beef",
+        POULTRY: "Poultry",
+        SEAFOOD: "Seafood",
+        LAMB: "Lamb",
+        VEGETABLES: "Vegetables"
+      };
+      
   const [order, setOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -103,9 +104,14 @@ export const OrderProvider = ({ children }) => {
         throw new Error('Failed to fetch order');
       }
 
-      const data = await response.json();
-      setOrder(data);
-      localStorage.setItem('order', JSON.stringify(data));
+      const responseData = await response.json();
+      // Extract the actual order data from the response
+      const orderData = responseData.data?.order || responseData;
+      
+      console.log('Fetched order data:', orderData);
+      
+      setOrder(orderData);
+      localStorage.setItem('order', JSON.stringify(orderData));
       
     } catch (err) {
       setError(err.message || 'Failed to fetch order');
@@ -233,6 +239,7 @@ export const OrderProvider = ({ children }) => {
 
   const value = {
     order,
+    setOrder,
     isLoading,
     error,
     clearOrder,

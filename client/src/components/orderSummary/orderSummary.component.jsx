@@ -1,65 +1,106 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { OrderContext } from "../../OrderContext/OrderContext";
+import { UserContext } from "../../UserContext/UserContext";
 
 const OrderSummary = () => {
   const [expandedSharing, setExpandedSharing] = useState({});
   const [expandedCategory, setExpandedCategory] = useState(null);
+  const [expandedProductOrders, setExpandedProductOrders] = useState({});
 
-  // Dummy data
-  const dummyData = {
-    "Pork": [
-      {
-        product: "Pork Loin Ribs",
-        brand: "Alibem",
-        unitPrice: 160.56,
-        packageWeight: 10,
-        orderedBy: [
-          { name: "Tanaka", ratio: "1/2" },
-          { name: "Zuva", ratio: "1/4" },
-          { name: "Luna", ratio: "1/4" }
-        ],
-        quantity: 1,
-        isShared: true
-      },
-      {
-        product: "Pork Belly",
-        brand: "Seara",
-        unitPrice: 145.20,
-        packageWeight: 8,
-        orderedBy: [{ name: "Mike", ratio: "1" }],
-        quantity: 2,
-        isShared: false
-      }
-    ],
-    "Beef": [
-      {
-        product: "Beef Ribeye",
-        brand: "Swift",
-        unitPrice: 280.35,
-        packageWeight: 12,
-        orderedBy: [
-          { name: "Sarah", ratio: "1/3" },
-          { name: "John", ratio: "2/3" }
-        ],
-        quantity: 3,
-        isShared: true
-      }
-    ],
-    "Poultry": [],
-    "Seafood": [],
-    "Lamb": [],
-    "Vegetables": []
-  };
+  const { order, isLoading, error, getProductsByCategory, calculateCategoryTotals, calculateOrderTotals, categories } = useContext(OrderContext);
+  const { user } = useContext(UserContext);
 
-  const toggleSharing = (category, index) => {
+  console.log('OrderSummary Component Render:', {
+    order,
+    isLoading,
+    error,
+    localStorageOrder: localStorage.getItem('order')
+  });
+
+  useEffect(() => {
+    const cachedOrder = localStorage.getItem('order');
+    if (cachedOrder) {
+      try {
+        const parsedOrder = JSON.parse(cachedOrder);
+        if (!order && parsedOrder._id) {
+          // Only set if we don't already have an order in context
+          setOrder(parsedOrder);
+        }
+      } catch (err) {
+        console.error('Error parsing cached order:', err);
+      }
+    }
+  }, [order, setOrder]);
+
+  if (isLoading) {
+    return <div className="text-center p-4">Loading order summary...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center p-4 text-red-500">Error: {error}</div>;
+  }
+
+  if (!order) {
+    return <div className="text-center p-4">No order data available. Please try again.</div>;
+  }
+
+  // Restructure order products from context to group by product within categories
+  const categorizedProductGroups = React.useMemo(() => {
+    if (!order?.products) {
+      console.log("categorizedProductGroups useMemo - order.products is empty or null:", order); // ADD THIS LINE
+      return {};
+    }
+
+    const groupedData = {};
+    Object.values(categories).forEach(categoryName => {
+      console.log("categorizedProductGroups useMemo - Processing category:", categoryName); // ADD THIS LINE
+      const productsInCategory = getProductsByCategory(categoryName);
+      console.log("categorizedProductGroups useMemo - Products in category:", categoryName, productsInCategory); // ADD THIS LINE
+
+      if (productsInCategory && productsInCategory.length > 0) {
+        const productsMap = new Map();
+        productsInCategory.forEach(orderItem => {
+          console.log("categorizedProductGroups useMemo - Processing orderItem:", orderItem); // ADD THIS LINE
+          if (productsMap.has(orderItem.product)) {
+            productsMap.get(orderItem.product).orders.push(orderItem);
+          } else {
+            productsMap.set(orderItem.product, {
+              product: orderItem.product,
+              brand: orderItem.brand,
+              unitPrice: orderItem.unitPrice,
+              packageWeight: orderItem.packageWeight,
+              orders: [orderItem]
+            });
+          }
+        });
+        groupedData[categoryName] = Array.from(productsMap.values());
+      } else {
+        groupedData[categoryName] = []; // Ensure category exists even if empty
+      }
+    });
+    console.log("categorizedProductGroups useMemo - Final groupedData:", groupedData); // ADD THIS LINE
+    return groupedData;
+  }, [order, getProductsByCategory, categories]);
+
+
+  const toggleSharing = (category, productName, orderIndex) => {
     setExpandedSharing(prev => ({
       ...prev,
-      [`${category}-${index}`]: !prev[`${category}-${index}`]
+      [`${category}-${productName}-${orderIndex}`]: !prev[`${category}-${productName}-${orderIndex}`]
     }));
   };
 
+  const toggleProductOrders = (category, productName) => {
+    setExpandedProductOrders(prev => ({
+      ...prev,
+      [`${category}-${productName}`]: !prev[`${category}-${productName}`]
+    }));
+  };
+
+
   const calculateAmounts = (unitPrice, quantity) => {
     const amount = unitPrice * quantity;
-    const vat = amount * 0.05;
+    const vat = amount * 0.05; // VAT_RATE is already in OrderContext, consider using it from there for consistency
     const total = amount + vat;
     return { amount, vat, total };
   };
@@ -68,11 +109,11 @@ const OrderSummary = () => {
     return `AED ${value.toFixed(2)}`;
   };
 
-  const calculateCategoryTotals = (products) => {
-    return products.reduce((acc, item) => {
-      const { amount, vat, total } = calculateAmounts(item.unitPrice, item.quantity);
+  const calculateProductTotals = (productData) => {
+    return productData.orders.reduce((acc, order) => {
+      const { amount, vat, total } = calculateAmounts(productData.unitPrice, order.quantity);
       return {
-        boxes: acc.boxes + item.quantity,
+        boxes: acc.boxes + order.quantity,
         amount: acc.amount + amount,
         vat: acc.vat + vat,
         total: acc.total + total
@@ -80,17 +121,10 @@ const OrderSummary = () => {
     }, { boxes: 0, amount: 0, vat: 0, total: 0 });
   };
 
-  const calculateGrandTotal = () => {
-    return Object.values(dummyData).reduce((acc, products) => {
-      const categoryTotals = calculateCategoryTotals(products);
-      return {
-        boxes: acc.boxes + categoryTotals.boxes,
-        amount: acc.amount + categoryTotals.amount,
-        vat: acc.vat + categoryTotals.vat,
-        total: acc.total + categoryTotals.total
-      };
-    }, { boxes: 0, amount: 0, vat: 0, total: 0 });
-  };
+  // calculateCategoryTotals and calculateGrandTotal are already in OrderContext
+  // We will use those from the context directly.
+  const grandTotal = calculateOrderTotals();
+
 
   const handleAddProduct = (category) => {
     console.log(`Adding product to ${category}`);
@@ -100,64 +134,101 @@ const OrderSummary = () => {
     setExpandedCategory(expandedCategory === category ? null : category);
   };
 
-  const grandTotal = calculateGrandTotal();
 
-  // MobileProductCard component modification
-const MobileProductCard = ({ item, category, index }) => {
-    const { total } = calculateAmounts(item.unitPrice, item.quantity);
-    
+  // MobileProductCard component
+  const MobileProductCard = ({ productData, category }) => {
+    const productTotals = calculateProductTotals(productData);
+
     return (
       <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3">
           <div>
             <p className="text-sm text-gray-500">Product</p>
-            <p className="font-medium text-gray-900">{item.product}</p>
+            <div className="flex items-center justify-between">
+              <p className="font-medium text-gray-900">{productData.product}</p>
+              <button
+                onClick={() => toggleProductOrders(category, productData.product)}
+                className="text-blue-600 text-sm"
+              >
+                {expandedProductOrders[`${category}-${productData.product}`] ? 'Hide Orders' : 'Show Orders'}
+              </button>
+            </div>
           </div>
           <div>
             <p className="text-sm text-gray-500">Brand</p>
-            <p className="font-medium text-gray-900">{item.brand}</p>
+            <p className="font-medium text-gray-900">{productData.brand}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Quantity</p>
-            <p className="font-medium text-gray-900">{item.quantity} boxes</p>
+            <p className="text-sm text-gray-500">Total Quantity</p>
+            <p className="font-medium text-gray-900">{productTotals.boxes} boxes</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Ordered By</p>
-            <div className="font-medium text-gray-900">
-              {item.isShared ? (
-                <div className="relative">
-                  <button
-                    onClick={() => toggleSharing(category, index)}
-                    className="text-blue-600"
-                  >
-                    {item.orderedBy[0].name}...
-                  </button>
-                  {expandedSharing[`${category}-${index}`] && (
-                    <div className="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-sm">
-                      {item.orderedBy.map((user, idx) => (
-                        <div key={idx} className="px-4 py-2 hover:bg-gray-100">
-                          {user.name} ({user.ratio})
-                        </div>
-                      ))}
+            <p className="text-sm text-gray-500">Total Amount</p>
+            <p className="font-medium text-gray-900">{formatCurrency(productTotals.total)}</p>
+          </div>
+          {expandedProductOrders[`${category}-${productData.product}`] && (
+            <div className="mt-2">
+              <p className="text-sm text-gray-500">Orders:</p>
+              {productData.orders.map((order, orderIndex) => (
+                <div key={orderIndex} className="bg-gray-50 p-2 rounded-md mt-1">
+                  <p className="text-sm text-gray-700">Order {orderIndex + 1}</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <p className="text-xs text-gray-500">Quantity</p>
+                      <p className="text-sm font-medium text-gray-900">{order.quantity} boxes</p>
                     </div>
-                  )}
+                    <div>
+                      <p className="text-xs text-gray-500">Ordered By</p>
+                      <div className="text-sm font-medium text-gray-900">
+                        {order.isShared ? (
+                          <div className="relative">
+                            <button
+                              onClick={() => toggleSharing(category, productData.product, orderIndex)}
+                              className="text-blue-600 text-xs"
+                            >
+                              {order.orderedBy[0].name}...
+                            </button>
+                            {expandedSharing[`${category}-${productData.product}-${orderIndex}`] && (
+                              <div className="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-sm">
+                                {order.orderedBy.map((user, idx) => (
+                                  <div key={idx} className="px-4 py-2 hover:bg-gray-100">
+                                    {user.name} ({user.ratio})
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          order.orderedBy[0].name
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                item.orderedBy[0].name
-              )}
+              ))}
             </div>
-          </div>
-          <div className="col-span-2">
-            <p className="text-sm text-gray-500">Total</p>
-            <p className="font-medium text-gray-900">{formatCurrency(total)}</p>
-          </div>
+          )}
         </div>
       </div>
     );
   };
 
+  if (isLoading) {
+    return <div className="text-center p-4">Loading order summary...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center p-4 text-red-500">Error: {error}</div>;
+  }
+
+  if (!order) {
+    return <div className="text-center p-4">No order data available.</div>;
+  }
+
+
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6">
+
       {/* Header with Grand Total */}
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Order Summary</h1>
@@ -186,13 +257,13 @@ const MobileProductCard = ({ item, category, index }) => {
 
       {/* Categories */}
       <div className="space-y-6">
-        {Object.entries(dummyData).map(([category, products]) => {
+        {Object.entries(categorizedProductGroups).map(([category, products]) => {
           const categoryTotals = calculateCategoryTotals(products);
-          
+
           return (
             <div key={category} className="bg-white rounded-lg shadow-md overflow-hidden">
               {/* Category Header */}
-              <div 
+              <div
                 className="p-4 bg-gray-50 cursor-pointer"
                 onClick={() => toggleCategory(category)}
               >
@@ -200,9 +271,9 @@ const MobileProductCard = ({ item, category, index }) => {
                   <h2 className="text-xl font-semibold text-gray-700">{category}</h2>
                   <div className="flex items-center gap-2">
                     <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
-                      {products.length} boxes
+                      {products.reduce((sum, product) => sum + calculateProductTotals(product).boxes, 0)} boxes
                     </span>
-                    <svg 
+                    <svg
                       className={`w-5 h-5 transform transition-transform ${expandedCategory === category ? 'rotate-180' : ''}`}
                       fill="none"
                       stroke="currentColor"
@@ -221,10 +292,11 @@ const MobileProductCard = ({ item, category, index }) => {
                     <>
                       {/* Mobile View */}
                       <div className="block sm:hidden">
-                        {products.map((item, index) => (
-                          <MobileProductCard 
+                        {products.map((productData, index) => (
+                          <MobileProductCard
                             key={index}
-                            item={item}
+                            productData={productData}
+                            category={category}
                           />
                         ))}
                         <div className="mt-4 p-4 bg-gray-50 rounded-lg">
@@ -251,59 +323,80 @@ const MobileProductCard = ({ item, category, index }) => {
                               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand</th>
                               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Price</th>
                               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Weight/Box</th>
-                              <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ordered By</th>
-                              <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Boxes</th>
+                              <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Boxes</th>
                               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">VAT 5%</th>
                               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                              <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Orders</th>
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
-                            {products.map((item, index) => {
-                              const { amount, vat, total } = calculateAmounts(item.unitPrice, item.quantity);
+                            {products.map((productData, index) => {
+                              const productTotals = calculateProductTotals(productData);
+                              const { amount, vat, total } = productTotals;
+
                               return (
                                 <tr key={index} className="hover:bg-gray-50">
-                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{item.product}</td>
-                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{item.brand}</td>
-                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{formatCurrency(item.unitPrice)}</td>
-                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{item.packageWeight} kg</td>
-                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {item.isShared ? (
-                                      <div className="relative">
-                                        <button
-                                          onClick={() => toggleSharing(category, index)}
-                                          className="text-blue-600 hover:text-blue-800"
-                                        >
-                                          {item.orderedBy[0].name}...
-                                        </button>
-                                        {expandedSharing[`${category}-${index}`] && (
-                                          <div className="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-sm">
-                                            {item.orderedBy.map((user, idx) => (
-                                              <div key={idx} className="px-4 py-2 hover:bg-gray-100">
-                                                {user.name} ({user.ratio})
-                                              </div>
-                                            ))}
-                                          </div>
-                                        )}
-                                      </div>
-                                    ) : (
-                                      item.orderedBy[0].name
-                                    )}
-                                  </td>
-                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{item.quantity}</td>
+                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{productData.product}</td>
+                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{productData.brand}</td>
+                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{formatCurrency(productData.unitPrice)}</td>
+                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{productData.packageWeight} kg</td>
+                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{productTotals.boxes}</td>
                                   <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{formatCurrency(amount)}</td>
                                   <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{formatCurrency(vat)}</td>
                                   <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{formatCurrency(total)}</td>
+                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <button
+                                      onClick={() => toggleProductOrders(category, productData.product)}
+                                      className="text-blue-600 hover:text-blue-800 text-sm"
+                                    >
+                                      {expandedProductOrders[`${category}-${productData.product}`] ? 'Hide' : 'Show'} Orders
+                                    </button>
+                                    {expandedProductOrders[`${category}-${productData.product}`] && (
+                                      <div className="mt-2">
+                                        {productData.orders.map((order, orderIndex) => (
+                                          <div key={orderIndex} className="bg-gray-50 p-2 rounded-md mt-1 text-xs">
+                                            <strong className="block">Order {orderIndex + 1}:</strong>
+                                            <div>Quantity: {order.quantity} boxes</div>
+                                            <div>Ordered By:
+                                              {order.isShared ? (
+                                                <div className="relative inline-block">
+                                                  <button
+                                                    onClick={() => toggleSharing(category, productData.product, orderIndex)}
+                                                    className="text-blue-600 hover:text-blue-800 text-xs"
+                                                  >
+                                                    {order.orderedBy[0].name}...
+                                                  </button>
+                                                  {expandedSharing[`${category}-${productData.product}-${orderIndex}`] && (
+                                                    <div className="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-sm">
+                                                      {order.orderedBy.map((user, idx) => (
+                                                        <div key={idx} className="px-4 py-2 hover:bg-gray-100">
+                                                          {user.name} ({user.ratio})
+                                                        </div>
+                                                      ))}
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              ) : (
+                                                order.orderedBy[0].name
+                                              )}
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </td>
                                 </tr>
                               );
                             })}
                             {/* Category Subtotal Row */}
                             <tr className="bg-gray-50 font-medium">
-                              <td colSpan={5} className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">Category Total</td>
+                              <td colSpan={4} className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">Category Total</td>
                               <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{categoryTotals.boxes}</td>
                               <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{formatCurrency(categoryTotals.amount)}</td>
                               <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{formatCurrency(categoryTotals.vat)}</td>
                               <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{formatCurrency(categoryTotals.total)}</td>
+                              <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900"></td>
                             </tr>
                           </tbody>
                         </table>

@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import {useAuth } from '../../AuthContext/authContext';
 import { UserContext } from '../../UserContext/UserContext';
-
-
+import { useOrder } from '../../OrderContext/OrderContext';
 
 const CreateNewOrder = () => {
   
+  const {setOrder } = useOrder();
   const {getToken} = useAuth();
   const userContext = useContext(UserContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -126,6 +126,7 @@ const CreateNewOrder = () => {
         products: [] // Initialize empty products array - this will be populated later
       };
 
+      
       const response = await fetch('http://localhost:8000/manyama/orders', {
         method: 'POST',
         headers: {
@@ -139,6 +140,10 @@ const CreateNewOrder = () => {
       if (!response.ok) {
         throw new Error('Failed to create order');
       }
+
+      const newOrder = await response.json();
+      localStorage.setItem('order', JSON.stringify(newOrder));
+      setOrder(newOrder);
 
       setSuccessMessage('Order created successfully!');
 
@@ -163,6 +168,32 @@ const CreateNewOrder = () => {
       setIsSubmitting(false);
     }
   };
+
+  // Early return conditions
+  if (!userContext) {
+    return (
+      <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+        <p className="text-gray-600">Loading user context...</p>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+        <p className="text-gray-600">Loading user data...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+        <p className="text-red-600">Please login to create an order.</p>
+      </div>
+    );
+  }
+
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -300,5 +331,6 @@ const CreateNewOrder = () => {
     </div>
   );
 };
+
 
 export default CreateNewOrder;

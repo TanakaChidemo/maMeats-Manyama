@@ -1,17 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import useCountdown from "../../hooks/useCountdown";
 import { useOrder } from "../../OrderContext/OrderContext";
 
 const Order = ({ orderData }) => {
-  const { order: contextOrder, fetchOrder, isLoading, error } = useOrder();
+  const { order: contextOrder, fetchOrder, isLoading, error, setOrder } = useOrder();
   const [adminName, setAdminName] = useState("");
+
+  // console.log('Order Component - Props orderData:', orderData);
+  // console.log('Order Component - Context order:', contextOrder);
   
+  // Extract the actual order data from context if needed
+  const contextOrderData = contextOrder?.data?.order || contextOrder;
+
   // Use passed order data if available, otherwise use context
   const order = orderData || contextOrder;
+
+  const adminId = useMemo(() => {
+    return order?.admin?.[0]?._id;
+  }, [order?.admin]);
   
   // Use closing date from order, fallback to current date if not available
-  const closingDate = React.useMemo(() => 
+  const closingDate = useMemo(() => 
     order ? new Date(order.closingDate) : new Date(), 
     [order?.closingDate]
   );
@@ -20,47 +30,68 @@ const Order = ({ orderData }) => {
   const timeLeft = useCountdown(closingDate);
 
   useEffect(() => {
-    // Only fetch from context if we're not passed order data as props
-    if (!orderData) {
-      const cachedOrder = localStorage.getItem('order');
-      if (cachedOrder) {
-        const { _id } = JSON.parse(cachedOrder);
-        if (_id) {
-          fetchOrder(_id);
+    // Only update localStorage and context if we have orderData from props
+    if (orderData) {
+      console.log('Setting order data from props to localStorage:', orderData);
+      try {
+        localStorage.setItem('order', JSON.stringify(orderData));
+        
+        // Only update context if it's different from what we already have
+        if (!contextOrderData || contextOrderData._id !== orderData._id) {
+          setOrder(orderData);
         }
+      } catch (err) {
+        console.error('Error storing order:', err);
+      }
+    } 
+    // If no orderData from props and no context order, try to load from localStorage
+    else if (!contextOrderData) {
+      try {
+        const cachedOrder = localStorage.getItem('order');
+        if (cachedOrder) {
+          const parsedOrder = JSON.parse(cachedOrder);
+          if (parsedOrder._id && !contextOrderData) {
+            fetchOrder(parsedOrder._id);
+          }
+        }
+      } catch (err) {
+        console.error('Error loading from localStorage:', err);
       }
     }
-  }, [fetchOrder, orderData]);
+    // We don't need the else case since we already have what we need
+  }, [orderData, contextOrderData, setOrder, fetchOrder]);
+  
 
+  // Fetch admin name
   useEffect(() => {
     const fetchAdminName = async () => {
-      if (order?.admin?.[0]?._id) {
-        try {
-          const response = await fetch(`http://localhost:8000/manyama/users/${order.admin[0]._id}`, {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-              'Content-Type': 'application/json'
-            }
-          });
-          if (!response.ok) throw new Error('Failed to fetch admin details');
-          const data = await response.json();
-          setAdminName(data.data.user.firstName || 'Unknown Admin');
-        } catch (err) {
-          console.error('Error fetching admin name:', err);
-          setAdminName('Unknown Admin');
-        }
+      if (!adminId) return;
+      
+      try {
+        const response = await fetch(`http://localhost:8000/manyama/users/${adminId}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!response.ok) throw new Error('Failed to fetch admin details');
+        const data = await response.json();
+        setAdminName(data.data.user.firstName || 'Unknown Admin');
+      } catch (err) {
+        console.error('Error fetching admin name:', err);
+        setAdminName('Unknown Admin');
       }
     };
-
+  
     fetchAdminName();
-  }, [order?.admin]);
+  }, [adminId]);
 
   const formatDate = (date) => {
     const options = { day: '2-digit', month: 'short', year: 'numeric' };
     return new Intl.DateTimeFormat('en-GB', options).format(new Date(date));
   };
 
-  // Only show loading state when using context
+  // Loading state
   if (!orderData && isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -69,7 +100,7 @@ const Order = ({ orderData }) => {
     );
   }
 
-  // Only show error state when using context
+  // Error state
   if (!orderData && error) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -80,6 +111,34 @@ const Order = ({ orderData }) => {
       </div>
     );
   }
+
+  // No order data
+  if (!order) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  const handleOrderClick = useCallback(() => {
+    if (!order) return;
+    
+    try {
+      const orderToStore = {
+        ...order,
+        __v: undefined
+      };
+      localStorage.setItem('order', JSON.stringify(orderToStore));
+      
+      // Only update context if it's different from what we already have
+      if (!contextOrderData || JSON.stringify(orderToStore) !== JSON.stringify(contextOrderData)) {
+        setOrder(orderToStore);
+      }
+    } catch (err) {
+      console.error('Error storing order:', err);
+    }
+  }, [order, contextOrderData, setOrder]);
 
   return (
     <div className="flex flex-col justify-center max-w-2xl mx-auto p-6 border-2 border-blue-200 rounded-2xl bg-white shadow-lg hover:border-blue-300 transition-all">
@@ -104,29 +163,27 @@ const Order = ({ orderData }) => {
           <div className="text-lg">@{closingTime}</div>
 
           {/* Countdown Timer */}
-        <div className="text-xl mt-4 font-mono" id="countdown">
-          {!order ? (
-            <div className="text-yellow-200">No active order</div>
-          ) : timeLeft.isClosed ? (
-            <h2 className="text-red-100 font-bold bg-red-500 px-4 py-2 rounded-lg">Orders Closed</h2>
-          ) : (
-            <div className="flex space-x-2 justify-center">
-              {timeLeft.days > 0 && (
-                <span id="days" className="bg-blue-400 px-2 py-1 rounded">{timeLeft.days}d</span>
-              )}
-              <span id="hours" className="bg-blue-400 px-2 py-1 rounded">{timeLeft.hours}h</span>
-              <span id="minutes" className="bg-blue-400 px-2 py-1 rounded">{timeLeft.minutes}m</span>
-              {timeLeft.days === 0 && (
-                <span id="seconds" className={`bg-blue-400 px-2 py-1 rounded ${timeLeft.hours < 2 ? "animate-pulse" : ""}`}>
-                  {timeLeft.seconds}s
-                </span>
-              )}
-            </div>
-          )}
+          <div className="text-xl mt-4 font-mono" id="countdown">
+            {!order ? (
+              <div className="text-yellow-200">No active order</div>
+            ) : timeLeft.isClosed ? (
+              <h2 className="text-red-100 font-bold bg-red-500 px-4 py-2 rounded-lg">Orders Closed</h2>
+            ) : (
+              <div className="flex space-x-2 justify-center">
+                {timeLeft.days > 0 && (
+                  <span id="days" className="bg-blue-400 px-2 py-1 rounded">{timeLeft.days}d</span>
+                )}
+                <span id="hours" className="bg-blue-400 px-2 py-1 rounded">{timeLeft.hours}h</span>
+                <span id="minutes" className="bg-blue-400 px-2 py-1 rounded">{timeLeft.minutes}m</span>
+                {timeLeft.days === 0 && (
+                  <span id="seconds" className={`bg-blue-400 px-2 py-1 rounded ${timeLeft.hours < 2 ? "animate-pulse" : ""}`}>
+                    {timeLeft.seconds}s
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-
-        </div>
-
         
         {/* Payment Deadline */}
         <div className="text-xl text-center border-b border-blue-400 py-4 w-full">
@@ -154,21 +211,21 @@ const Order = ({ orderData }) => {
         {!order ? null : timeLeft.isClosed ? (
           <Link 
             to={`/orderSummary/${order._id}`}
-            className="mt-6 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 w-full text-center"
+            className="mt-6 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 w-full lg:w-1/3 text-center"
+            onClick={handleOrderClick}
           >
             View Final Order
           </Link>
         ) : (
           <Link 
             to={`/orderSummary/${order._id}`}
-            className="mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 w-full text-center"
+            className="mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 w-full lg:w-1/3 text-center"
+            onClick={handleOrderClick}
           >
             Place Order
           </Link>
         )}
       </div>
-
-      
     </div>
   );
 };

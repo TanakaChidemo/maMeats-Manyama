@@ -45,6 +45,7 @@ app.get("/manyama/hello", (req, res) => {
 
 //Routes
 app.use("/manyama/orders", orderRouter);
+app.use("/manyama/orderSummary", orderRouter);
 app.use("/manyama/products", productRouter);
 app.use("/manyama/users", userRouter);
 
