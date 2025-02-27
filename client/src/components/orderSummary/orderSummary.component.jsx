@@ -1,13 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { OrderContext } from "../../OrderContext/OrderContext";
 import { UserContext } from "../../UserContext/UserContext";
+import ProductSelectionModal from "../productSelectionModal/productSelectionModal";
 
 const OrderSummary = () => {
   const [expandedSharing, setExpandedSharing] = useState({});
   const [expandedCategory, setExpandedCategory] = useState(null);
   const [expandedProductOrders, setExpandedProductOrders] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const { order, isLoading, error, getProductsByCategory, calculateCategoryTotals, calculateOrderTotals, categories } = useContext(OrderContext);
+  const { order, isLoading, error, getProductsByCategory, calculateCategoryTotals, calculateOrderTotals, categories, setOrder } = useContext(OrderContext);
   const { user } = useContext(UserContext);
 
   console.log('OrderSummary Component Render:', {
@@ -17,50 +20,23 @@ const OrderSummary = () => {
     localStorageOrder: localStorage.getItem('order')
   });
 
-  useEffect(() => {
-    const cachedOrder = localStorage.getItem('order');
-    if (cachedOrder) {
-      try {
-        const parsedOrder = JSON.parse(cachedOrder);
-        if (!order && parsedOrder._id) {
-          // Only set if we don't already have an order in context
-          setOrder(parsedOrder);
-        }
-      } catch (err) {
-        console.error('Error parsing cached order:', err);
-      }
-    }
-  }, [order, setOrder]);
-
-  if (isLoading) {
-    return <div className="text-center p-4">Loading order summary...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center p-4 text-red-500">Error: {error}</div>;
-  }
-
-  if (!order) {
-    return <div className="text-center p-4">No order data available. Please try again.</div>;
-  }
-
   // Restructure order products from context to group by product within categories
   const categorizedProductGroups = React.useMemo(() => {
     if (!order?.products) {
-      console.log("categorizedProductGroups useMemo - order.products is empty or null:", order); // ADD THIS LINE
+      console.log("categorizedProductGroups useMemo - order.products is empty or null:", order);
       return {};
     }
 
     const groupedData = {};
     Object.values(categories).forEach(categoryName => {
-      console.log("categorizedProductGroups useMemo - Processing category:", categoryName); // ADD THIS LINE
+      console.log("categorizedProductGroups useMemo - Processing category:", categoryName);
       const productsInCategory = getProductsByCategory(categoryName);
-      console.log("categorizedProductGroups useMemo - Products in category:", categoryName, productsInCategory); // ADD THIS LINE
+      console.log("categorizedProductGroups useMemo - Products in category:", categoryName, productsInCategory);
 
       if (productsInCategory && productsInCategory.length > 0) {
         const productsMap = new Map();
         productsInCategory.forEach(orderItem => {
-          console.log("categorizedProductGroups useMemo - Processing orderItem:", orderItem); // ADD THIS LINE
+          console.log("categorizedProductGroups useMemo - Processing orderItem:", orderItem);
           if (productsMap.has(orderItem.product)) {
             productsMap.get(orderItem.product).orders.push(orderItem);
           } else {
@@ -78,10 +54,24 @@ const OrderSummary = () => {
         groupedData[categoryName] = []; // Ensure category exists even if empty
       }
     });
-    console.log("categorizedProductGroups useMemo - Final groupedData:", groupedData); // ADD THIS LINE
+    console.log("categorizedProductGroups useMemo - Final groupedData:", groupedData);
     return groupedData;
   }, [order, getProductsByCategory, categories]);
 
+  useEffect(() => {
+    const cachedOrder = localStorage.getItem('order');
+    if (cachedOrder) {
+      try {
+        const parsedOrder = JSON.parse(cachedOrder);
+        if (!order && parsedOrder._id) {
+          // Only set if we don't already have an order in context
+          setOrder(parsedOrder);
+        }
+      } catch (err) {
+        console.error('Error parsing cached order:', err);
+      }
+    }
+  }, [order, setOrder]);
 
   const toggleSharing = (category, productName, orderIndex) => {
     setExpandedSharing(prev => ({
@@ -96,7 +86,6 @@ const OrderSummary = () => {
       [`${category}-${productName}`]: !prev[`${category}-${productName}`]
     }));
   };
-
 
   const calculateAmounts = (unitPrice, quantity) => {
     const amount = unitPrice * quantity;
@@ -121,19 +110,20 @@ const OrderSummary = () => {
     }, { boxes: 0, amount: 0, vat: 0, total: 0 });
   };
 
-  // calculateCategoryTotals and calculateGrandTotal are already in OrderContext
-  // We will use those from the context directly.
-  const grandTotal = calculateOrderTotals();
-
-
   const handleAddProduct = (category) => {
-    console.log(`Adding product to ${category}`);
+    setSelectedCategory(category);
+    setIsModalOpen(true);
+  };
+
+  const handleAddProductsToOrder = (products) => {
+    // This would call your context function to update the order
+    // Likely something like:
+    updateOrderProducts(products);
   };
 
   const toggleCategory = (category) => {
     setExpandedCategory(expandedCategory === category ? null : category);
   };
-
 
   // MobileProductCard component
   const MobileProductCard = ({ productData, category }) => {
@@ -213,6 +203,9 @@ const OrderSummary = () => {
     );
   };
 
+  // Calculate the grand total (moved before early returns)
+  const grandTotal = calculateOrderTotals();
+
   if (isLoading) {
     return <div className="text-center p-4">Loading order summary...</div>;
   }
@@ -225,11 +218,8 @@ const OrderSummary = () => {
     return <div className="text-center p-4">No order data available.</div>;
   }
 
-
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6">
-
-      {/* Header with Grand Total */}
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Order Summary</h1>
         <div className="w-full sm:w-auto bg-blue-50 p-4 rounded-lg shadow">
@@ -423,6 +413,13 @@ const OrderSummary = () => {
           );
         })}
       </div>
+
+      <ProductSelectionModal
+  isOpen={isModalOpen}
+  onClose={() => setIsModalOpen(false)}
+  category={selectedCategory}
+  onAddProducts={handleAddProductsToOrder}
+/>
     </div>
   );
 };
