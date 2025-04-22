@@ -89,10 +89,16 @@ const ProductSelectionModal = ({
   
   // Initialize with filtered products - real-time filtering
   useEffect(() => {
+    console.log("Filtering with term:", searchTerm);
     if (!availableProducts || availableProducts.length === 0) {
       setFilteredProducts([]);
       return;
     }
+
+    console.log("Available products count:", availableProducts.length);
+    if (availableProducts.length > 0){
+      console.log("Sample product complete structure:", JSON.stringify(availableProducts[0], null, 2));
+    };
     
     // Only filter if search term has content
     if (searchTerm.trim() === '') {
@@ -108,7 +114,8 @@ const ProductSelectionModal = ({
       (product.brandName && product.brandName.toLowerCase().includes(lowerCaseSearchTerm)) ||
       (product.brand && product.brand.toLowerCase().includes(lowerCaseSearchTerm)) ||
       (product.description && product.description.toLowerCase().includes(lowerCaseSearchTerm)) ||
-      (product.countryOfOrigin && product.countryOfOrigin.toLowerCase().includes(lowerCaseSearchTerm))
+      (product.countryOfOrigin && product.countryOfOrigin.toLowerCase().includes(lowerCaseSearchTerm)) ||
+      (product.standardPackaging && product.standardPackaging.toLowerCase().includes(lowerCaseSearchTerm))
     );
     
     setFilteredProducts(filtered);
@@ -197,11 +204,11 @@ const ProductSelectionModal = ({
         return { 
           product: productId,
           brand: product.brandName || product.brand || '',
-          unitPrice: product.price || 0,
-          packageWeight: product.weight || 1, // Fallback weight if not provided
+          unitPrice: product.unitPrice || 0,
+          packageWeight: product.standardPackaging || '1 kg', // Use standardPackaging from model
           quantity,
           category,
-          isShared: false, // Default to not shared - sharing would be handled separately
+          isShared: false, // Default to not shared
           orderedBy: [{ id: user.id, name: user.name, ratio: 100 }]
         };
       })
@@ -259,8 +266,11 @@ const ProductSelectionModal = ({
             placeholder="Search products..."
             className="w-full p-2 border rounded"
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={e => {
+              console.log("SearchItem Changed:", e.target.value);
+              setSearchTerm(e.target.value)}}
           />
+          <label>Enter meat name only i.e. 'ribs' instead of 'pork ribs'</label>
         </div>
         
         <div className="overflow-y-auto flex-grow p-4">
@@ -270,8 +280,9 @@ const ProductSelectionModal = ({
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Brand</th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Weight</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Package</th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Your Quantity</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Origin</th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order Status</th>
               </tr>
             </thead>
@@ -290,8 +301,8 @@ const ProductSelectionModal = ({
                   <tr key={productId} className={isInUserOrder ? "bg-blue-50" : ""}>
                     <td className="px-3 py-4 whitespace-nowrap">{product.name}</td>
                     <td className="px-3 py-4 whitespace-nowrap">{product.brandName || product.brand || '-'}</td>
-                    <td className="px-3 py-4 whitespace-nowrap">AED {(product.price || 0).toFixed(2)}</td>
-                    <td className="px-3 py-4 whitespace-nowrap">{product.weight || '1'} kg</td>
+                    <td className="px-3 py-4 whitespace-nowrap">AED {(product.unitPrice || 0).toFixed(2)}</td>
+                    <td className="px-3 py-4 whitespace-nowrap">{product.standardPackaging || '1 kg'}</td>
                     <td className="px-3 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <button
@@ -314,6 +325,9 @@ const ProductSelectionModal = ({
                           +
                         </button>
                       </div>
+                    </td>
+                    <td className="px-3 py-4 whitespace-nowrap text-sm">
+                      {product.countryOfOrigin || '-'}
                     </td>
                     <td className="px-3 py-4 whitespace-nowrap">
                       {isInUserOrder && (
@@ -341,6 +355,7 @@ const ProductSelectionModal = ({
               )}
             </tbody>
           </table>
+        
         </div>
         
         <div className="p-4 border-t flex justify-end space-x-2">

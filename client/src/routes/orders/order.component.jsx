@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import useCountdown from "../../hooks/useCountdown";
 import { useOrder } from "../../OrderContext/OrderContext";
@@ -7,8 +7,7 @@ const Order = ({ orderData }) => {
   const { order: contextOrder, fetchOrder, isLoading, error, setOrder } = useOrder();
   const [adminName, setAdminName] = useState("");
 
-  // console.log('Order Component - Props orderData:', orderData);
-  // console.log('Order Component - Context order:', contextOrder);
+  const updatedOrderRef = useRef(false);
   
   // Extract the actual order data from context if needed
   const contextOrderData = contextOrder?.data?.order || contextOrder;
@@ -30,15 +29,20 @@ const Order = ({ orderData }) => {
   const timeLeft = useCountdown(closingDate);
 
   useEffect(() => {
-    // Only update localStorage and context if we have orderData from props
-    if (orderData) {
+    if (updatedOrderRef.current === JSON.stringify(orderData)) return;
+    
+     if (orderData) {
       console.log('Setting order data from props to localStorage:', orderData);
       try {
         localStorage.setItem('order', JSON.stringify(orderData));
         
-        // Only update context if it's different from what we already have
-        if (!contextOrderData || contextOrderData._id !== orderData._id) {
-          setOrder(orderData);
+        // Check if we need to update the context
+        const shouldUpdateContext = !contextOrderData || 
+                                   orderData._id !== contextOrderData._id;
+        
+        if (shouldUpdateContext) {
+          updatedOrderRef.current = JSON.stringify(orderData);
+          // setOrder(orderData);
         }
       } catch (err) {
         console.error('Error storing order:', err);
@@ -58,8 +62,12 @@ const Order = ({ orderData }) => {
         console.error('Error loading from localStorage:', err);
       }
     }
-    // We don't need the else case since we already have what we need
-  }, [orderData, contextOrderData, setOrder, fetchOrder]);
+  }, [orderData, contextOrderData]);
+
+  // Reset the ref flag after each render
+  useEffect(() => {
+    updatedOrderRef.current = false;
+  });
   
 
   // Fetch admin name

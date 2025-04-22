@@ -9,6 +9,8 @@ const OrderSummary = () => {
   const [expandedProductOrders, setExpandedProductOrders] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 const [selectedCategory, setSelectedCategory] = useState(null);
+const [isUpdating, setIsUpdating] = useState(false);
+const [updateError, setUpdateError] = useState(null);
 
   const { order, isLoading, error, getProductsByCategory, calculateCategoryTotals, calculateOrderTotals, categories, setOrder } = useContext(OrderContext);
   const { user } = useContext(UserContext);
@@ -115,11 +117,81 @@ const [selectedCategory, setSelectedCategory] = useState(null);
     setIsModalOpen(true);
   };
 
-  const handleAddProductsToOrder = (products) => {
-    // This would call your context function to update the order
-    // Likely something like:
-    updateOrderProducts(products);
+  const updateOrderProducts = async (productsToAdd) => {
+    if (!order || !productsToAdd.length) return;
+    
+    setIsUpdating(true);
+    setUpdateError(null);
+    
+    try {
+      const authToken = localStorage.getItem('authToken');
+      
+      if (!authToken) {
+        throw new Error('Authentication token not found. Please log in again.');
+      }
+      
+      console.log("Products to add:", productsToAdd);
+      
+      // Simplified approach - send all products at once in a format matching your backend
+      const response = await fetch(`http://localhost:8000/manyama/orders/${order._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          products: productsToAdd
+        })
+      });
+      
+      // Get the full response text for debugging
+      const responseText = await response.text();
+      console.log("Response status:", response.status);
+      console.log("Response text:", responseText);
+      
+      let responseData;
+      try {
+        responseData = JSON.parse(responseText);
+      } catch (e) {
+        console.error("Response is not valid JSON:", e);
+      }
+      
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status} - ${responseText}`);
+      }
+      
+      // After successful update, fetch the updated order
+      const updatedOrderResponse = await fetch(`http://localhost:8000/manyama/orders/${order._id}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!updatedOrderResponse.ok) {
+        throw new Error(`Error fetching updated order: ${updatedOrderResponse.status}`);
+      }
+      
+      const updatedOrderData = await updatedOrderResponse.json();
+      console.log('Updated order response:', updatedOrderData);
+      
+      // Update the order in context/state
+      if (updatedOrderData.data && updatedOrderData.data.order) {
+        setOrder(updatedOrderData.data.order);
+        
+        // Update localStorage
+        localStorage.setItem('order', JSON.stringify(updatedOrderData.data.order));
+      }
+    } catch (err) {
+      console.error('Error updating order products:', err);
+      setUpdateError(err.message);
+    } finally {
+      setIsUpdating(false);
+    }
   };
+
+
 
   const toggleCategory = (category) => {
     setExpandedCategory(expandedCategory === category ? null : category);
@@ -131,6 +203,25 @@ const [selectedCategory, setSelectedCategory] = useState(null);
 
     return (
       <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
+
+      {/* Show update error if exists * */}
+      {updateError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <strong className="font-bold">Error updating order: </strong>
+          <span className="block sm:inline">{updateError}</span>
+        </div>
+      )}
+      
+      {/* Show updating indicator * */}
+      {isUpdating && (
+        <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <div className="flex items-center">
+            <div className="w-4 h-4 mr-2 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <span>Updating order...</span>
+          </div>
+        </div>
+      )}
+
         <div className="grid grid-cols-1 gap-3">
           <div>
             <p className="text-sm text-gray-500">Product</p>
@@ -415,11 +506,11 @@ const [selectedCategory, setSelectedCategory] = useState(null);
       </div>
 
       <ProductSelectionModal
-  isOpen={isModalOpen}
-  onClose={() => setIsModalOpen(false)}
-  category={selectedCategory}
-  onAddProducts={handleAddProductsToOrder}
-/>
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        category={selectedCategory}
+        onAddProducts={updateOrderProducts}
+      />
     </div>
   );
 };
