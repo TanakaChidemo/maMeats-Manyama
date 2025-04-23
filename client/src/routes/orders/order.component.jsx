@@ -29,7 +29,13 @@ const Order = ({ orderData }) => {
   const timeLeft = useCountdown(closingDate);
 
   useEffect(() => {
-    if (updatedOrderRef.current === JSON.stringify(orderData)) return;
+    if (updatedOrderRef.current === JSON.stringify(orderData)) {
+      console.log("updatedOrderRef is present");
+      return;
+    }
+    else{
+      console.log("updatedOrderRef is not present");
+    };
     
      if (orderData) {
       console.log('Setting order data from props to localStorage:', orderData);
@@ -42,7 +48,7 @@ const Order = ({ orderData }) => {
         
         if (shouldUpdateContext) {
           updatedOrderRef.current = JSON.stringify(orderData);
-          // setOrder(orderData);
+          setOrder(orderData);
         }
       } catch (err) {
         console.error('Error storing order:', err);
@@ -64,10 +70,6 @@ const Order = ({ orderData }) => {
     }
   }, [orderData, contextOrderData]);
 
-  // Reset the ref flag after each render
-  useEffect(() => {
-    updatedOrderRef.current = false;
-  });
   
 
   // Fetch admin name
