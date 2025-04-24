@@ -46,7 +46,7 @@ const [updateError, setUpdateError] = useState(null);
               product: orderItem.product,
               brand: orderItem.brand,
               unitPrice: orderItem.unitPrice,
-              packageWeight: orderItem.packageWeight,
+              standardPackaging: orderItem.standardPackaging,
               orders: [orderItem]
             });
           }
@@ -421,7 +421,7 @@ const [updateError, setUpdateError] = useState(null);
                                   <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">{productData.product}</td>
                                   <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{productData.brand}</td>
                                   <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{formatCurrency(productData.unitPrice)}</td>
-                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{productData.packageWeight} kg</td>
+                                  <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{productData.standardPackaging} kg</td>
                                   <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{productTotals.boxes}</td>
                                   <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{formatCurrency(amount)}</td>
                                   <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">{formatCurrency(vat)}</td>
