@@ -66,7 +66,6 @@ const [updateError, setUpdateError] = useState(null);
       try {
         const parsedOrder = JSON.parse(cachedOrder);
         if (!order && parsedOrder._id) {
-          // Only set if we don't already have an order in context
           setOrder(parsedOrder);
         }
       } catch (err) {

@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema({
   product: { type: mongoose.Schema.ObjectId, ref: "Product", required: true },
   brand: String,
   unitPrice: Number,
-  packageWeight: Number,
+  standardPackaging: Number,
   orderedBy: [sharedUserSchema],
   quantity: {
     type: Number,
