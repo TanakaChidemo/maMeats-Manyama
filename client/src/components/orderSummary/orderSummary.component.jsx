@@ -255,7 +255,7 @@ const [updateError, setUpdateError] = useState(null);
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <p className="text-xs text-gray-500">Quantity</p>
-                      <p className="text-sm font-medium text-gray-900">{order.quantity} boxes</p>
+                      <p className="text-sm font-medium text-gray-900">{order.product.quantity} boxes</p>
                     </div>
                     <div>
                       <p className="text-xs text-gray-500">Ordered By</p>
@@ -266,20 +266,20 @@ const [updateError, setUpdateError] = useState(null);
                               onClick={() => toggleSharing(category, productData.product, orderIndex)}
                               className="text-blue-600 text-xs"
                             >
-                              {order.orderedBy[0].name}...
+                              {order.orderedBy[0].user.userName}...
                             </button>
                             {expandedSharing[`${category}-${productData.product}-${orderIndex}`] && (
                               <div className="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-sm">
                                 {order.orderedBy.map((user, idx) => (
                                   <div key={idx} className="px-4 py-2 hover:bg-gray-100">
-                                    {user.name} ({user.ratio})
+                                    {user.userName} ({user.ratio})
                                   </div>
                                 ))}
                               </div>
                             )}
                           </div>
                         ) : (
-                          order.orderedBy[0].name
+                          order.orderedBy[0].user.userName
                         )}
                       </div>
                     </div>
@@ -437,7 +437,7 @@ const [updateError, setUpdateError] = useState(null);
                                         {productData.orders.map((order, orderIndex) => (
                                           <div key={orderIndex} className="bg-gray-50 p-2 rounded-md mt-1 text-xs">
                                             <strong className="block">Order {orderIndex + 1}:</strong>
-                                            <div>Quantity: {order.quantity} boxes</div>
+                                            <div>Quantity: {order.product.quantity} boxes</div>
                                             <div>Ordered By:
                                               {order.isShared ? (
                                                 <div className="relative inline-block">
@@ -445,7 +445,7 @@ const [updateError, setUpdateError] = useState(null);
                                                     onClick={() => toggleSharing(category, productData.product, orderIndex)}
                                                     className="text-blue-600 hover:text-blue-800 text-xs"
                                                   >
-                                                    {order.orderedBy[0].name}...
+                                                    {order.orderedBy[0].user.userName}...
                                                   </button>
                                                   {expandedSharing[`${category}-${productData.product}-${orderIndex}`] && (
                                                     <div className="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-sm">
@@ -458,7 +458,7 @@ const [updateError, setUpdateError] = useState(null);
                                                   )}
                                                 </div>
                                               ) : (
-                                                order.orderedBy[0].name
+                                                order.orderedBy[0].user.userName
                                               )}
                                             </div>
                                           </div>

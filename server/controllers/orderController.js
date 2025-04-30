@@ -108,7 +108,11 @@ exports.addProductToOrder = catchAsync(async (req, res, next) => {
   }
 
   // Find the order by ID
-  const order = await Order.findById(orderId);
+  const order = await Order.findById(orderId)
+  .populate({
+    path: 'products.orderedBy.user.userName',
+    select: 'userName'
+  });
   if (!order) {
     return next(new AppError("Order not found", 404));
   }
