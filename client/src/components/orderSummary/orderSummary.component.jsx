@@ -29,6 +29,8 @@ const [updateError, setUpdateError] = useState(null);
       return {};
     }
 
+    console.log("The useMemo has fired.");
+
     const groupedData = {};
     Object.values(categories).forEach(categoryName => {
       console.log("categorizedProductGroups useMemo - Processing category:", categoryName);
