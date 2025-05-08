@@ -1,18 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../UserContext/UserContext';
 
 const Home = () => {
   const { user, isLoading, error } = useContext(UserContext);
 
-  useEffect(() => {
-    console.log('Home component user data:', {
-      user,
-      firstName: user?.firstName,
-      isLoading,
-      error
-    });
-  }, [user, isLoading, error]);
+
 
   // Handle loading state
   if (isLoading) {
@@ -24,8 +17,6 @@ const Home = () => {
     return <div className="text-red-500 text-center p-4">{error}</div>;
   }
 
-  // Debug log just before rendering
-  console.log('Rendering Home with user:', user);
 
   return (
     <div className="container mx-auto px-4 py-8">

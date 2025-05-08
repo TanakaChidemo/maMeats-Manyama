@@ -6,7 +6,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'));
+  const [authToken, setAuthToken] = useState(sessionStorage.getItem('authToken'));
 
   const clearAllState = () => {
     // Clear all localStorage
@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
           return;
         }
 
-        const cachedUser = localStorage.getItem('user');
+        const cachedUser = sessionStorage.getItem('user');
         if (!cachedUser) {
           setUser(null);
           setIsLoading(false);
@@ -61,7 +61,7 @@ export const UserProvider = ({ children }) => {
             if (isMounted) {
               const freshUserData = data.user || data;
               setUser(freshUserData);
-              localStorage.setItem('user', JSON.stringify(freshUserData));
+              sessionStorage.setItem('user', JSON.stringify(freshUserData));
             }
           }
         } catch (e) {
@@ -89,7 +89,7 @@ export const UserProvider = ({ children }) => {
     setUser: (userData) => {
       if (userData) {
         setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
+        sessionStorage.setItem('user', JSON.stringify(userData));
       } else {
         clearAllState();
       }
